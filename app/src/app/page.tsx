@@ -1,9 +1,6 @@
 "use client";
-import React, { useState } from "react";
-import { Footer } from "./_components/footer/footer";
-// import { Swiper, SwiperSlide } from "swiper/react";
-// import { Pagination, Autoplay } from "swiper/modules";
-// import * as echarts from "echarts";
+import React, { useEffect, useState } from "react";
+import Footer from "./_components/footer/footer";
 
 interface Movie {
   id: number;
@@ -25,11 +22,16 @@ interface User {
 }
 
 const App: React.FC = () => {
+  const [isClient, setIsClient] = useState(false);
   const [currentPage, setCurrentPage] = useState<string>("home");
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [showLoginModal, setShowLoginModal] = useState<boolean>(false);
   const [showMobileMenu, setShowMobileMenu] = useState<boolean>(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   const featuredMovies: Movie[] = [
     {
@@ -151,7 +153,7 @@ const App: React.FC = () => {
             {[...featuredMovies, ...featuredMovies].map((movie, index) => (
               <div
                 key={index}
-                className="bg-white rounded-lg overflow-hidden shadow-lg"
+                className="bg-white rounded-lg overflow-hidden shadow-lg cursor-pointer transform hover:scale-105 transition-transform"
               >
                 <img
                   src={movie.imageUrl}
@@ -198,19 +200,19 @@ const App: React.FC = () => {
             </h1>
             <nav className="hidden md:flex space-x-6">
               <button
-                className="hover:text-gray-200"
+                className="hover:text-gray-300 transition duraction-300"
                 onClick={() => setCurrentPage("home")}
               >
                 Home
               </button>
               <button
-                className="hover:text-gray-200"
+                className="hover:text-gray-300 transition duraction-300"
                 onClick={() => setCurrentPage("categories")}
               >
                 Categories
               </button>
               <button
-                className="hover:text-gray-200"
+                className="hover:text-gray-300 transition duraction-300"
                 onClick={() => setCurrentPage("search")}
               >
                 Browse
@@ -333,7 +335,7 @@ const App: React.FC = () => {
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div>
-                  <h3 className="text-xl font-semibold text-red-600 mb-4">
+                  <h3 className="text-xl font-semibold text-red-600 mb-">
                     Watchlist
                   </h3>
                   <div className="space-y-4">
@@ -380,7 +382,6 @@ const App: React.FC = () => {
                 </div>
               </div>
             </div>
-            <Footer />
           </div>
         );
       default:
@@ -393,6 +394,7 @@ const App: React.FC = () => {
       {renderHeader()}
       {renderContent()}
       {renderLoginModal()}
+      {isClient && <Footer />}
     </div>
   );
 };
